@@ -19,7 +19,19 @@ Apllication can make new invoices, customers, products. Automatically saves chan
 * `npm install`
 
 ###### Run the build
-`npm run build-dev`
+Since Unix systems and Windows don't have shared API, I've made the default start for Unix
+##### For Unix
+Run `npm start`
+It should run the frontend build command then copy bungle to the public directory and start server.
+If not, read error message from the console
+
+##### For Widnows
+To run the project on Winndows you need to make some tedius steps. Making more friendly build script in the nearest future :)
+* `cd ./frontend`
+* `npm run build`
+* go to project root directory
+* `npm run copy-ui-windows`
+* `node ./app.js`
 
 `node app.js`
 

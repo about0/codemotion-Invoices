@@ -15,7 +15,7 @@ class productList extends Component {
     this.props.handleProductDeletion(this.props.product.id);
   };
 
-  render () {
+  render() {
     return (
       <tr key={this.props.product.id}>
         <td>{this.props.index + 1}</td>

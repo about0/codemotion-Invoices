@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 
-class Modal extends React.Component {
-  render () {
+class Modal extends Component {
+  render() {
     // Render nothing if the "show" prop is false
     if (!this.props.show) {
       return null;
@@ -44,7 +44,11 @@ class Modal extends React.Component {
           {this.props.children}
 
           <div style={closeButtonDiv} className="footer">
-            <Button bsStyle="warning" onClick={this.props.onClose}>
+            <Button
+              bsStyle="danger"
+              bsSize="large"
+              onClick={this.props.onClose}
+            >
               Close
             </Button>
           </div>

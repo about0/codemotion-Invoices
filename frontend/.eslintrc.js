@@ -3,10 +3,11 @@ module.exports = {
   env: {
     browser: true
   },
-  extends: "react",
+  plugins: ["prettier"],
+  extends: ["plugin:prettier/recommended"],
   rules: {
-    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
     indent: ["warn", 2],
-    "max-len": ["warn", 120]
+    "max-len": ["warn", 120],
+    "prettier/prettier": "error"
   }
 };

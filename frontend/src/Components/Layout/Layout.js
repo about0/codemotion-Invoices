@@ -9,13 +9,13 @@ const layout = () => (
       </Navbar.Brand>
     </Navbar.Header>
     <Nav>
-      <NavItem eventKey={1} href="#">
+      <NavItem eventKey={1} href="/products">
         Products
       </NavItem>
       <NavItem eventKey={2} href="/customers">
         Customers
       </NavItem>
-      <NavItem eventKey={3} href="#">
+      <NavItem eventKey={3} href="/invoices">
         Invoices
       </NavItem>
     </Nav>

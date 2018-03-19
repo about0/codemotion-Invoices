@@ -1,6 +1,15 @@
 import React, { PureComponent } from "react";
 import "./createInvoice.css";
-import { FormGroup, ControlLabel, FormControl, Table, Button, HelpBlock, Label, Alert } from "react-bootstrap";
+import {
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  Table,
+  Button,
+  HelpBlock,
+  Label,
+  Alert
+} from "react-bootstrap";
 import Aux from "../../Components/Hoc/Aux_wrapper";
 import Axios from "axios";
 import ProductListItem from "../../Components/Invoices/Products/productListItem";
@@ -17,18 +26,33 @@ class CreateInvoice extends PureComponent {
       prevState.discountValue !== this.state.discountValue
     ) {
       this.calculateTotalPrice();
-    } else if (this.state.selectedCutsomerId && this.state.totalPrice > 0 && !this.state.invoiceCreated) {
+    } else if (
+      this.state.selectedCutsomerId &&
+      this.state.totalPrice > 0 &&
+      !this.state.invoiceCreated
+    ) {
       this.createInvoiceRequest();
       this.setState({
         invoiceCreated: true
       });
     } else if (
-      (prevState.totalPrice !== this.state.totalPrice && this.state.invoiceCreated) ||
-      (prevState.selectedCutsomerId !== this.state.selectedCutsomerId && this.state.invoiceCreated) ||
-      (prevState.discountValue !== this.state.discountValue && this.state.invoiceCreated)
+      (prevState.totalPrice !== this.state.totalPrice &&
+        this.state.invoiceCreated) ||
+      (prevState.selectedCutsomerId !== this.state.selectedCutsomerId &&
+        this.state.invoiceCreated) ||
+      (prevState.discountValue !== this.state.discountValue &&
+        this.state.invoiceCreated)
     ) {
       this.updateInvoiceRequest();
+    } else if (this.state.customerCreated) {
+      this.littleMessageTimout();
     }
+  };
+
+  littleMessageTimout = () => {
+    setTimeout(() => {
+      this.setState({ customerCreated: false });
+    }, 2000);
   };
   getCustomersHandler = () => {
     Axios.get(`http://localhost:8000/api/customers/`, {
@@ -105,7 +129,9 @@ class CreateInvoice extends PureComponent {
       ...{ quantity: quantity }
     };
     let newSelectedProducts = [...this.state.selectedProducts];
-    const productIndex = newSelectedProducts.findIndex(product => product.id === selectedProduct.id);
+    const productIndex = newSelectedProducts.findIndex(
+      product => product.id === selectedProduct.id
+    );
 
     if (productIndex > -1) {
       newSelectedProducts = [
@@ -117,14 +143,13 @@ class CreateInvoice extends PureComponent {
 
     const calculatedArray = [...this.state.selectedProducts, selectedProduct];
 
-    console.log(calculatedArray);
-
     let calculatedPrice = 0;
 
     calculatedArray.forEach(product => {
       const productList = [...this.state.productsList];
       const parsedProductId = Number.parseInt(product.id, 10);
-      calculatedPrice += productList.find(obj => obj.id === parsedProductId).price * quantity;
+      calculatedPrice +=
+        productList.find(obj => obj.id === parsedProductId).price * quantity;
     });
 
     this.setState({
@@ -135,7 +160,9 @@ class CreateInvoice extends PureComponent {
 
   handleProductSelection = e => {
     const selectedProductId = Number.parseInt(e.target.value, 10);
-    const alreadyListed = this.state.selectedProducts.find(product => product.id === selectedProductId);
+    const alreadyListed = this.state.selectedProducts.find(
+      product => product.id === selectedProductId
+    );
     console.log(alreadyListed || Number.isNaN(selectedProductId));
     if (!alreadyListed && !Number.isNaN(selectedProductId)) {
       this.setState({
@@ -152,9 +179,13 @@ class CreateInvoice extends PureComponent {
 
   handleProductAddition = () => {
     const selectedProductId = Number.parseInt(this.state.selectedProductId, 10);
-    const selectedProduct = this.state.productsList.find(product => product.id === selectedProductId);
+    const selectedProduct = this.state.productsList.find(
+      product => product.id === selectedProductId
+    );
     selectedProduct.quantity = 1;
-    const selectedProductsList = [...this.state.selectedProducts].concat(selectedProduct);
+    const selectedProductsList = [...this.state.selectedProducts].concat(
+      selectedProduct
+    );
 
     this.setState({
       selectedProducts: selectedProductsList,
@@ -173,7 +204,9 @@ class CreateInvoice extends PureComponent {
   handleProductIncrease = id => {
     const parsedId = Number.parseInt(id, 10);
     let selectedProductsList = [...this.state.selectedProducts];
-    const productIndex = selectedProductsList.findIndex(product => product.id === parsedId);
+    const productIndex = selectedProductsList.findIndex(
+      product => product.id === parsedId
+    );
     selectedProductsList[productIndex].quantity++;
     this.setState({
       selectedProducts: selectedProductsList
@@ -183,7 +216,9 @@ class CreateInvoice extends PureComponent {
   handleProductDecrease = id => {
     const parsedId = Number.parseInt(id, 10);
     let selectedProductsList = [...this.state.selectedProducts];
-    const productIndex = selectedProductsList.findIndex(product => product.id === parsedId);
+    const productIndex = selectedProductsList.findIndex(
+      product => product.id === parsedId
+    );
     if (selectedProductsList[productIndex].quantity <= 1) {
       return;
     }
@@ -196,7 +231,9 @@ class CreateInvoice extends PureComponent {
   handleProductDeletion = id => {
     const parsedId = Number.parseInt(id, 10);
     let selectedProductsList = [...this.state.selectedProducts];
-    const productIndex = selectedProductsList.findIndex(product => product.id === parsedId);
+    const productIndex = selectedProductsList.findIndex(
+      product => product.id === parsedId
+    );
     selectedProductsList.splice(productIndex, 1);
     this.setState({
       selectedProducts: selectedProductsList
@@ -240,7 +277,7 @@ class CreateInvoice extends PureComponent {
     });
   };
 
-  getValidationState () {
+  getValidationState() {
     const value = Number.parseInt(this.state.discountValue, 10);
     if (value > 100) return "error";
     else if (value > 0 && value <= 100) return "success";
@@ -248,7 +285,7 @@ class CreateInvoice extends PureComponent {
     return null;
   }
 
-  render () {
+  render() {
     const totalPrice =
       this.state.totalPrice >= 0 ? (
         <h3>
@@ -292,11 +329,16 @@ class CreateInvoice extends PureComponent {
         <FormControl
           style={formControlStyles}
           type="text"
+          placeholder="Customer Name"
           value={this.state.customerCreationFormValue}
           name="customerCreationFormValue"
           onChange={this.handleChange}
         />
-        <Button style={addButtonStyles} onClick={this.handleCustomerCreation} bsStyle="success">
+        <Button
+          style={addButtonStyles}
+          onClick={this.handleCustomerCreation}
+          bsStyle="success"
+        >
           Create
         </Button>
       </FormGroup>
@@ -325,11 +367,17 @@ class CreateInvoice extends PureComponent {
       <Aux>
         <form className="Invoice">
           {customersInteractionsForm}
-          <Button style={{}} onClick={this.toggleCustomerCreation} bsStyle="info">
+          <Button
+            style={{}}
+            onClick={this.toggleCustomerCreation}
+            bsStyle="info"
+          >
             Customer Creation Form
           </Button>
           <FormGroup>
-            <ControlLabel style={{ display: "block" }}>Select Products</ControlLabel>
+            <ControlLabel style={{ display: "block" }}>
+              Select Products
+            </ControlLabel>
             <FormControl
               style={formControlStyles}
               componentClass="select"
@@ -352,30 +400,42 @@ class CreateInvoice extends PureComponent {
               +
             </Button>
           </FormGroup>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.selectedProducts.map((product, index) => (
-                <ProductListItem
-                  unitPrice={product.price * product.quantity}
-                  key={product.id}
-                  product={product}
-                  index={index}
-                  handleProductIncrease={this.handleProductIncrease}
-                  handleProductDecrease={this.handleProductDecrease}
-                  handleProductDeletion={this.handleProductDeletion}
-                />
-              ))}
-            </tbody>
-          </Table>
-          <FormGroup style={{ paddingTop: 10 }} controlId="coupon" validationState={this.getValidationState()}>
+          {this.state.selectedProducts.length > 0 ? (
+            <Table responsive>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.selectedProducts.map((product, index) => (
+                  <ProductListItem
+                    unitPrice={product.price * product.quantity}
+                    key={product.id}
+                    product={product}
+                    index={index}
+                    handleProductIncrease={this.handleProductIncrease}
+                    handleProductDecrease={this.handleProductDecrease}
+                    handleProductDeletion={this.handleProductDeletion}
+                  />
+                ))}
+              </tbody>
+            </Table>
+          ) : (
+            <Alert bsStyle="warning">
+              <strong>Products are not selected!</strong> Please, start
+              selecting products for your invoice!
+            </Alert>
+          )}
+
+          <FormGroup
+            style={{ paddingTop: 10 }}
+            controlId="coupon"
+            validationState={this.getValidationState()}
+          >
             <ControlLabel>Discount</ControlLabel>
             <FormControl
               minLength={0}
@@ -388,7 +448,10 @@ class CreateInvoice extends PureComponent {
               style={{ width: "auto" }}
             />
             <FormControl.Feedback />
-            <HelpBlock>Validation is based on numeric value. Allowed from zero up to hundred</HelpBlock>
+            <HelpBlock>
+              Validation is based on numeric value. Allowed from zero up to
+              hundred
+            </HelpBlock>
           </FormGroup>
           {totalPrice}
         </form>

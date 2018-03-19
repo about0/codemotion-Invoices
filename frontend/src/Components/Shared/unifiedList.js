@@ -12,15 +12,19 @@ class UnifiedList extends PureComponent {
     });
   };
 
-  render () {
+  render() {
     return (
       <Table>
         <thead>
           <tr>
             <th>{this.props.secondColumnName}</th>
             <th>{this.props.thirdColumnName}</th>
-            <th>{this.props.fourthColumnName}</th>
-            {this.props.fifthColumnName ? <th>{this.props.fifthColumnName}</th> : null}
+            {this.props.fourthColumnName ? (
+              <th>{this.props.fourthColumnName}</th>
+            ) : null}
+            {this.props.fifthColumnName ? (
+              <th>{this.props.fifthColumnName}</th>
+            ) : null}
           </tr>
         </thead>
         <tbody>
@@ -29,29 +33,31 @@ class UnifiedList extends PureComponent {
               <td>{item[this.props.secondColumnValue]}</td>
               <td style={{ width: "auto" }}>
                 <FormControl
-                  type="text"
+                  type={this.props.thirdColumnType || "text"}
                   value={item[this.props.thirdColumnValue] || ""}
-                  onChange={e => this.props.thirdColumnChange(e, item)}
+                  onChange={e => this.props.onChange(e, item)}
                   name={this.props.thirdColumnValue}
                 />
               </td>
               <td>
                 <FormControl
-                  type="text"
+                  type={this.props.fourthColumnType || "text"}
                   value={item[this.props.fourthColumnValue] || ""}
-                  onChange={e => this.props.thirdColumnChange(e, item)}
+                  onChange={e => this.props.onChange(e, item)}
                   name={this.props.fourthColumnValue}
                 />
               </td>
-              <td>
-                <FormControl
-                  type="text"
-                  style={{ maxWidth: "150" }}
-                  value={item[this.props.fifthColumnValue] || ""}
-                  onChange={e => this.props.thirdColumnChange(e, item)}
-                  name={this.props.fifthColumnValue}
-                />
-              </td>
+              {this.props.fifthColumnValue ? (
+                <td>
+                  <FormControl
+                    type={this.props.fifthColumnType || "text"}
+                    style={{ maxWidth: "150" }}
+                    value={item[this.props.fifthColumnValue] || ""}
+                    onChange={e => this.props.onChange(e, item)}
+                    name={this.props.fifthColumnValue}
+                  />
+                </td>
+              ) : null}
             </tr>
           ))}
         </tbody>

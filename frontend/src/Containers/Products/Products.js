@@ -10,7 +10,7 @@ class Customers extends Component {
 
   state = {
     isOpen: false,
-    customersList: []
+    productsList: []
   };
 
   toggleModal = () => {
@@ -21,12 +21,12 @@ class Customers extends Component {
   };
 
   getCustomersHandler = () => {
-    Axios.get(`http://localhost:8000/api/customers/`, {
+    Axios.get(`http://localhost:8000/api/products/`, {
       responseType: "json"
     }).then(response => {
       const data = response.data;
       this.setState({
-        customersList: data
+        productsList: data
       });
     });
   };
@@ -40,35 +40,31 @@ class Customers extends Component {
     );
     copyCustomerList[customerIndex].name = name;
 
-    console.log(customerIndex, name);
-
     this.setState({
       customersList: copyCustomerList
     });
 
-    Axios.put(`http://localhost:8000/api/customers/${item.id}`, {
+    Axios.put(`http://localhost:8000/api/products/${item.id}`, {
       name: name
     });
   };
 
-  handleCustomerChange = (event, item) => {
+  handleChange = (event, item) => {
     const fieldName = event.target.name;
     const eventValue = event.target.value;
     const parsedId = Number.parseInt(item.id, 10);
-    const copyCustomerList = [...this.state.customersList];
+    const copyProductsList = [...this.state.productsList];
 
-    const customerIndex = copyCustomerList.findIndex(
+    const productIndex = copyProductsList.findIndex(
       customer => customer.id === parsedId
     );
-    copyCustomerList[customerIndex][fieldName] = eventValue;
-
-    console.log(customerIndex, name);
+    copyProductsList[productIndex][fieldName] = eventValue;
 
     this.setState({
-      customersList: copyCustomerList
+      productsList: copyProductsList
     });
 
-    Axios.put(`http://localhost:8000/api/customers/${item.id}`, {
+    Axios.put(`http://localhost:8000/api/products/${item.id}`, {
       [fieldName]: eventValue
     });
   };
@@ -77,16 +73,14 @@ class Customers extends Component {
     return (
       <Aux>
         <UnifiedList
-          array={this.state.customersList}
+          array={this.state.productsList}
           secondColumnName="Id"
           thirdColumnName="Name"
-          fourthColumnName="Address"
-          fifthColumnName="Phone"
+          fourthColumnName="Price"
           secondColumnValue="id"
           thirdColumnValue="name"
-          fourthColumnValue="address"
-          fifthColumnValue="phone"
-          onChange={this.handleCustomerChange}
+          fourthColumnValue="price"
+          onChange={this.handleChange}
         />
       </Aux>
     );
