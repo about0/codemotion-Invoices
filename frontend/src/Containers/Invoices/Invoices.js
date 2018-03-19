@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Aux from "../../Components/Hoc/Aux";
+import Aux from "../../Components/Hoc/Aux_wrapper";
 import { Button } from "react-bootstrap";
 import Modal from "../../Components/Hoc/Modal";
 import CreateInvoice from "./createInvoice";

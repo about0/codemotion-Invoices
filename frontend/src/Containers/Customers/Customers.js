@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Aux from "../../Components/Hoc/Aux";
+import Aux from "../../Components/Hoc/Aux_wrapper";
 import UnifiedList from "../../Components/Shared/unifiedList";
 import Axios from "axios";
 

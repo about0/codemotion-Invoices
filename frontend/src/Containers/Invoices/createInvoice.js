@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import "./createInvoice.css";
 import { FormGroup, ControlLabel, FormControl, Table, Button, HelpBlock, Label, Alert } from "react-bootstrap";
-import Aux from "../../Components/Hoc/Aux";
+import Aux from "../../Components/Hoc/Aux_wrapper";
 import Axios from "axios";
 import ProductListItem from "../../Components/Invoices/Products/productListItem";
 
