@@ -7,7 +7,7 @@
     "start-dev": "concurrently --kill-others-on-fail \"yarn build-dev\" \"yarn copy-ui\" \"yarn start\"",
     "build-dev": "cd ./frontend && npm start",
     "copy-ui-windows": "xcopy .\\frontend\\build\\* public /y /s",
-    "copy-ui": "cp -R ./frontend/build public/",
+    "copy-ui": "cp -R ./frontend/build/* public/",
     "build": "cd ./frontend && npm run build",
     "start": "nodemon app.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn frontend\""
