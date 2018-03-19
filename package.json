@@ -10,7 +10,8 @@
     "copy-ui": "cp -R ./frontend/build/* public/",
     "build": "cd ./frontend && npm run build",
     "start": "nodemon app.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn frontend\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn frontend\"",
+    "postinstall": "cd ./frontend && npm install"
   },
   "dependencies": {
     "body-parser": "1.15.0",
