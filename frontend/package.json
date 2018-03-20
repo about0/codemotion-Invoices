@@ -45,8 +45,8 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "cross-env PORT=3000 node scripts/start.js",
-    "build": "cross-env PORT=8000 node scripts/build.js",
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
     "build-unix": "cross-env PORT=8000 node scripts/build.js && mv build ../public",
     "test": "node scripts/test.js --env=jsdom"
   },
