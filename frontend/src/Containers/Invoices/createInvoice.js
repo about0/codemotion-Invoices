@@ -89,8 +89,10 @@ class CreateInvoice extends PureComponent {
     discountValue: 0,
     isOpen: false,
     toggleCustomerCreationForm: false,
-    customerCreationFormValue: "",
-    customerCreated: false
+    customerCreationNameValue: "",
+    customerCreated: false,
+    customerCreationAddressValue: "",
+    customerCreationPhoneValue: ""
   };
 
   createInvoiceRequest = () => {
@@ -264,7 +266,9 @@ class CreateInvoice extends PureComponent {
 
   handleCustomerCreation = () => {
     Axios.post("http://localhost:8000/api/customers", {
-      name: this.state.customerCreationFormValue
+      name: this.state.customerCreationNameValue,
+      phone: this.state.customerCreationPhoneValue,
+      address: this.state.customerCreationAddressValue
     }).then(response => {
       const status = Number.parseInt(response.status, 10);
       if (status === 200) {
@@ -312,7 +316,7 @@ class CreateInvoice extends PureComponent {
     const controlLabelStyles = { display: "block" };
     const formGroupStyles = {
       width: "50%",
-      display: "inline-block"
+      display: "block"
     };
 
     const messageAlert = this.state.customerCreated ? (
@@ -323,17 +327,42 @@ class CreateInvoice extends PureComponent {
       ""
     );
 
+    const customerCreationStyles = {
+      display: "block"
+    };
     const customersInteractionsForm = this.state.toggleCustomerCreationForm ? (
-      <FormGroup style={formGroupStyles}>
-        <ControlLabel style={controlLabelStyles}>Create Customer</ControlLabel>
-        <FormControl
-          style={formControlStyles}
-          type="text"
-          placeholder="Customer Name"
-          value={this.state.customerCreationFormValue}
-          name="customerCreationFormValue"
-          onChange={this.handleChange}
-        />
+      <div>
+        <FormGroup style={formGroupStyles}>
+          <ControlLabel style={controlLabelStyles}>
+            Create Customer
+          </ControlLabel>
+          <FormControl
+            type="text"
+            placeholder="Customer Name"
+            value={this.state.customerCreationNameValue}
+            name="customerCreationNameValue"
+            onChange={this.handleChange}
+          />
+        </FormGroup>
+        <FormGroup style={formGroupStyles}>
+          <FormControl
+            type="text"
+            placeholder="Customer Address"
+            value={this.state.customerCreationAddressValue}
+            name="customerCreationAddressValue"
+            onChange={this.handleChange}
+          />
+        </FormGroup>
+        <FormGroup style={formGroupStyles}>
+          <FormControl
+            type="text"
+            placeholder="Customer Phone"
+            value={this.state.customerCreationPhoneValue}
+            name="customerCreationPhoneValue"
+            onChange={this.handleChange}
+          />
+        </FormGroup>
+
         <Button
           style={addButtonStyles}
           onClick={this.handleCustomerCreation}
@@ -341,7 +370,7 @@ class CreateInvoice extends PureComponent {
         >
           Create
         </Button>
-      </FormGroup>
+      </div>
     ) : (
       <FormGroup style={formGroupStyles}>
         <ControlLabel style={controlLabelStyles}>Select Customer</ControlLabel>
@@ -368,7 +397,7 @@ class CreateInvoice extends PureComponent {
         <form className="Invoice">
           {customersInteractionsForm}
           <Button
-            style={{}}
+            style={{ margin: "10px 0" }}
             onClick={this.toggleCustomerCreation}
             bsStyle="info"
           >
